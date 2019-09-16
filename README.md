@@ -28,10 +28,15 @@ Create your own **DataSource** class extending from **RendererDataSource**
 Implements ***RendererDataSource*** methods:
 
 ***getKeys:*** Use to manage next and previous page keys
+
 ***getInitial:*** How to obtain the first page data
+
 ***getReinitial:*** *optional* How to obtain the first page data if is a firstInstance = false
+
 ***getAfter:*** How to obtain next pages data
+
 ***getBefore:*** How to obtain previous pages data
+
 ***create:*** How to obtain a new instance when invalidate data and restart
 
 ### Attaching a RecyclerView
