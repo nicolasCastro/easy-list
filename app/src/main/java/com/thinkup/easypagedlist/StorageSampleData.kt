@@ -19,5 +19,9 @@ class StorageSampleData(context: Context) {
         }
     }
 
-    fun get(limit: Int = 0, offset: Int = 0): List<SampleItem> = items.subList(offset, limit)
+    fun get(limit: Int = 0, offset: Int = 0): List<SampleItem> =
+        items.subList(getOffset(offset), getLimit(offset, limit))
+
+    private fun getLimit(offset: Int, limit: Int) = if (offset + limit > items.size) items.size else offset + limit
+    private fun getOffset(offset: Int) = if (offset > items.size) items.size else offset
 }
