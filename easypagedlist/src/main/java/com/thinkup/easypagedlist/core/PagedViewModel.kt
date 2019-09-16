@@ -27,19 +27,19 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
         liveItemsSource = LivePagedListBuilder(factory, config).build()
     }
 
-    fun initState(owner: LifecycleOwner, update: (Boolean, RendererDataSource.State) -> Unit) {
+    fun initState(owner: LifecycleOwner, update: ((Boolean, RendererDataSource.State) -> Unit)?) {
         getState().observe(owner, Observer { state ->
             if (!listIsEmpty()) {
                 adapter.setState(state ?: RendererDataSource.State.DONE)
             }
-            update(listIsEmpty(), state)
+            update?.invoke(listIsEmpty(), state)
         })
     }
 
-    fun initList(owner: LifecycleOwner, update: () -> Unit) {
+    fun initList(owner: LifecycleOwner, update: (() -> Unit)?) {
         liveItemsSource.observe(owner, Observer {
             adapter.submitList(it)
-            update()
+            update?.invoke()
         })
     }
 
