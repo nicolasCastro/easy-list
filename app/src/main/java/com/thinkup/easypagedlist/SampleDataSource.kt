@@ -19,7 +19,7 @@ class SampleDataSource(
         actualOffset = items.size
     }
 
-    override suspend fun getInitial(): List<*> = storageSampleData.get()
+    override suspend fun getInitial(): List<*> = storageSampleData.get(pageSize)
 
     override suspend fun getAfter(): List<*> = storageSampleData.get(pageSize, actualOffset)
 

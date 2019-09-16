@@ -23,7 +23,7 @@ class DataSource<T>(private val provider: ListProvider<T>) : PageKeyedDataSource
     companion object {
         fun default(size: Int) = PagedList.Config.Builder()
             .setInitialLoadSizeHint(size)
-            .setPageSize(size)
+            .setPageSize(if (size == 0) 1 else size)
             .build()
     }
 }

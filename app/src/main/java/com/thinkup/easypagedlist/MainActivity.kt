@@ -1,26 +1,59 @@
 package com.thinkup.easypagedlist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easypagedlist.core.PagedViewModel
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import androidx.lifecycle.ViewModelProviders
-import sun.jvm.hotspot.utilities.IntArray
-
+import com.thinkup.easypagedlist.core.RendererDataSource
+import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var paged: PagedViewModel<SampleDataSource>
+    private val paged: PagedViewModel<SampleDataSource> by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val factory = SampleViewModelFactory(this.application)
-        paged = ViewModelProviders.of(this, factory)
-            .get(paged::class.java)
+        prepareRefresh()
+        prepareList()
+        initState()
+        initList()
+    }
+
+    private fun initState() {
+        paged.initState(this) { empty, state ->
+            if (empty) {
+                when (state) {
+                    RendererDataSource.State.ERROR ->
+                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                    RendererDataSource.State.DONE ->
+                        Toast.makeText(this, "No items", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun initList() {
+        paged.initList(this) {
+            sampleRefresh.isRefreshing = false
+        }
+    }
+
+    private fun prepareList() {
+        sampleList.layoutManager = LinearLayoutManager(this)
+        paged.addRenderers(SampleRenderer())
+        paged.setFooterLayout(R.layout.footer_loading, R.layout.footer_error)
+        paged.attachToRecyclerView(sampleList)
+    }
+
+    private fun prepareRefresh() {
+        sampleRefresh.isRefreshing = false
+        sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
+        sampleRefresh.setOnRefreshListener {
+            paged.refresh()
+        }
     }
 }

@@ -9,6 +9,6 @@
               android:textAlignment="center"
               android:gravity="center"
               android:padding="40dp"
-              android:text="@string/fotter_error_message"/>
+              android:text="@string/footer_error_message"/>
 
 </LinearLayout>

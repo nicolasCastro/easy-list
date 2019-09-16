@@ -7,19 +7,17 @@ import java.io.InputStreamReader
 
 
 class StorageSampleData(context: Context) {
-    private val items: List<SampleItem>
+    private val items: MutableList<SampleItem> = mutableListOf()
 
     init {
-        val list: List<SampleItem> = listOf()
-        items = try {
-            val stream = context.getResources().openRawResource(R.raw.items)
+        try {
+            val stream = context.resources.openRawResource(R.raw.items)
             val reader = BufferedReader(InputStreamReader(stream))
-            Gson().fromJson(reader, list::class.java)
+            val data = Gson().fromJson(reader, SampleData::class.java)
+            items.addAll(data.data)
         } catch (ex: Exception) {
-            list
         }
     }
 
     fun get(limit: Int = 0, offset: Int = 0): List<SampleItem> = items.subList(offset, limit)
-
 }
