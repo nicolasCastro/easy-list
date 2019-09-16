@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">easy-paged-list</string>
+    <string name="fotter_error_message">Error! Volver a intentar</string>
+</resources>
