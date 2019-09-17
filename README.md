@@ -3,7 +3,7 @@ Android Multi DataSource Paging Library in few steps. Using LiveData, AndroidX P
 
 [![](https://jitpack.io/v/nicolasCastro/easy-paged-list.svg)](https://jitpack.io/#nicolasCastro/easy-paged-list)
 
-Easy way to use paging android library with any datasource (retrofit, room, realm, json, static data, etc..) in a few steps.
+Easy way to use paging android library with any datasource (Retrofit, Room, Realm, Json, static data, etc..) in a few steps.
 
 ## How to use
 
@@ -21,9 +21,9 @@ Create your own **DataSource** class extending from **RendererDataSource**:
         firstInstance: Boolean = true // optional: If you wont use the getReinitial instance of getInitial to first load
     ) : RendererDataSource<MyDataSource>(inputSource, firstInstance)
     
-***inputSource:*** *optional:* If you want restart a previous instance data
+***inputSource:*** (*optional)* If you want restart a previous instance data
 
-***firstInstance:*** *optional:* If you want use the getReinitial instance of getInitial to first load
+***firstInstance:*** (*optional*) If you want use the getReinitial instance of getInitial to first load
 
 Implements ***RendererDataSource*** methods:
 
@@ -31,7 +31,7 @@ Implements ***RendererDataSource*** methods:
 
 ***getInitial:*** How to obtain the first page data
 
-***getReinitial:*** *optional* How to obtain the first page data if is a firstInstance = false
+***getReinitial:*** (*optional*) How to obtain the first page data if is a firstInstance = false
 
 ***getAfter:*** How to obtain next pages data
 
