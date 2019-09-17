@@ -1,9 +1,9 @@
 # easy-paged-list
-Android Multi DataSource Paging Library in few steps. Using LiveData, AndroidX Paging, ViewModel
+Android Multi DataSource Paging Library in few steps. Using LiveData, AndroidX Paging and ViewModel.
 
 [![](https://jitpack.io/v/nicolasCastro/easy-paged-list.svg)](https://jitpack.io/#nicolasCastro/easy-paged-list)
 
-Easy way to use paging android library with anything datasource (retrofit, room, realm, json, static data, etc..) in a few steps.
+Easy way to use paging android library with any datasource (retrofit, room, realm, json, static data, etc..) in a few steps.
 
 ## How to use
 
@@ -13,7 +13,7 @@ Add the library dependency:
      
 ### DataSource
 
-Create your own **DataSource** class extending from **RendererDataSource**
+Create your own **DataSource** class extending from **RendererDataSource**:
 
     class MyDataSource(
         // ... yours params ... //
@@ -21,9 +21,9 @@ Create your own **DataSource** class extending from **RendererDataSource**
         firstInstance: Boolean = true // optional: If you wont use the getReinitial instance of getInitial to first load
     ) : RendererDataSource<MyDataSource>(inputSource, firstInstance)
     
-***inputSource:*** *optional:* If you wont restart a previous instance data
+***inputSource:*** *optional:* If you want restart a previous instance data
 
-***firstInstance:*** *optional:* If you wont use the getReinitial instance of getInitial to first load
+***firstInstance:*** *optional:* If you want use the getReinitial instance of getInitial to first load
 
 Implements ***RendererDataSource*** methods:
 
@@ -41,17 +41,17 @@ Implements ***RendererDataSource*** methods:
 
 ### Attaching a RecyclerView
 
-In your Activity/Fragment use a **PagedViewModel** class instance to get an android *ViewModel*  which be a paging manager. Encapsulated in that *ViewModel* we have a generic *PagedListAdapter*:
+In your Activity/Fragment use a **PagedViewModel** class instance to get an android *ViewModel*  to be a paging manager. We have a generic *PagedListAdapter* encapsulated in that *ViewModel* :
 
 Attach a recyclerView to the custom library adatper:
 
     pagedViewModel.attachToRecyclerView(myRecyclerView)
 
-the library provide default footers to loading and errors, but you can override this calling:
+the library provide default footers for loading and errors, but you can override this call:
 
       pagedViewModel.setFooterLayout(R.layout.my_footer_loading, R.layout.my_footer_error)
       
-If you want uses a SwipeRefreshLayout, do it calling 
+You can also use a SwipeRefreshLayout by calling the following method 
 
     pagedViewModel.refresh()
     
@@ -59,11 +59,11 @@ to invalidate data and restart the pages.
 
 ### Initialization
 
-Is necessary call from *PagedViewModel* two methods ***initList*** and ***initState*** to submit the list and set footer state to the adapter, respectively. And if you want add a custom action, can you pass them as a block.
+You need to invoke  ***initList*** and ***initState***  methods from *PagedViewModel* to be able to submit the list and set footer state to the adapter, respectively. Also if you want to add a custom action, you can pass them as a block.
 
 
 ## Add Items
 
-***RendererPagedAdapter*** use the Renderers pattern, so, to add a new Renderers implement a class extending from *ViewRenderer<MyModel, View>* and pass an instance to *pagedViewModel.addRenderers(MyRenderer())*
+***RendererPagedAdapter*** use the Renderers pattern. To add a new Renderers you need to implement a class extending from *ViewRenderer<MyModel, View>* and pass a new instance to *pagedViewModel.addRenderers(MyRenderer())*
 
-***NOTE:*** Add a renderers for each type of items you have
+***NOTE:*** Add a renderers for each type of items you may have.
