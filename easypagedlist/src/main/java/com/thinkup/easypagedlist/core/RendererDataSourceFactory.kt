@@ -2,7 +2,7 @@ package com.thinkup.easypagedlist.core
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.thinkup.easypagedlist.core.adapter.RendererItem
+import com.thinkup.easycore.RendererItem
 
 class RendererDataSourceFactory<T : RendererDataSource<T>>(private val dataSource: T) : DataSource.Factory<Int, RendererItem<*>>() {
 

@@ -1,4 +1,4 @@
-package com.thinkup.easypagedlist.core.adapter
+package com.thinkup.easycore
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

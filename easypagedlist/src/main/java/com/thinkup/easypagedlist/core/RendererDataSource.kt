@@ -3,7 +3,7 @@ package com.thinkup.easypagedlist.core
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
-import com.thinkup.easypagedlist.core.adapter.RendererItem
+import com.thinkup.easycore.RendererItem
 import com.thinkup.easypagedlist.core.converters.DataSource
 import com.thinkup.easypagedlist.core.converters.ListProvider
 import kotlinx.coroutines.Dispatchers

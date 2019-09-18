@@ -1,4 +1,4 @@
-package com.thinkup.easypagedlist.core.adapter
+package com.thinkup.easycore
 
 import android.view.LayoutInflater
 import android.view.View

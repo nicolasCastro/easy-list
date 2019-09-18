@@ -7,8 +7,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.thinkup.easypagedlist.R
-import com.thinkup.easypagedlist.core.adapter.RendererItem
-import com.thinkup.easypagedlist.core.adapter.ViewRenderer
+import com.thinkup.easycore.RendererItem
 
 class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = DEFAULT_PAGE_SIZE) :
     ViewModel(), RendererPagedAdapter.RetryCallback {
@@ -43,7 +42,7 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
         })
     }
 
-    fun addRenderers(vararg renderers: ViewRenderer<out Any, out View>) {
+    fun addRenderers(vararg renderers: com.thinkup.easycore.ViewRenderer<out Any, out View>) {
         renderers.forEach {
             adapter.addRenderer(it)
         }

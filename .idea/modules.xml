@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/easy-paged-list.iml" filepath="$PROJECT_DIR$/easy-paged-list.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easycore/easycore.iml" filepath="$PROJECT_DIR$/easycore/easycore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easylist/easylist.iml" filepath="$PROJECT_DIR$/easylist/easylist.iml" />
       <module fileurl="file://$PROJECT_DIR$/easypagedlist/easypagedlist.iml" filepath="$PROJECT_DIR$/easypagedlist/easypagedlist.iml" />
     </modules>
   </component>

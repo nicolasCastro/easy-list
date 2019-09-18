@@ -1,6 +1,6 @@
 package com.thinkup.easypagedlist.core
 
-import com.thinkup.easypagedlist.core.adapter.RendererItem
+import com.thinkup.easycore.RendererItem
 
 
 interface IDataSource<T> {

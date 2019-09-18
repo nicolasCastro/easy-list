@@ -8,10 +8,10 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thinkup.easypagedlist.R
-import com.thinkup.easypagedlist.core.adapter.RendererItem
-import com.thinkup.easypagedlist.core.adapter.RendererViewHolder
-import com.thinkup.easypagedlist.core.adapter.RendererViewModel
-import com.thinkup.easypagedlist.core.adapter.ViewRenderer
+import com.thinkup.easycore.RendererItem
+import com.thinkup.easycore.RendererViewHolder
+import com.thinkup.easycore.RendererViewModel
+import com.thinkup.easycore.ViewRenderer
 
 class RendererPagedAdapter(
     private val errorCallback: RetryCallback? = null,
