@@ -1,4 +1,4 @@
-package com.thinkup.easypagedlist
+package com.thinkup.sampleeasy
 
 import android.os.Bundle
 import android.widget.Toast
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easypagedlist.core.PagedViewModel
 import com.thinkup.easypagedlist.core.RendererDataSource
+
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 

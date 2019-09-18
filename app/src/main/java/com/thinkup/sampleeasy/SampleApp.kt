@@ -1,4 +1,4 @@
-package com.thinkup.easypagedlist
+package com.thinkup.sampleeasy
 
 import android.app.Application
 import com.thinkup.easypagedlist.core.PagedViewModel

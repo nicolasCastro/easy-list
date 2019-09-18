@@ -1,10 +1,9 @@
-package com.thinkup.easypagedlist
+package com.thinkup.sampleeasy
 
 import com.google.gson.Gson
 import android.content.Context
 import java.io.BufferedReader
 import java.io.InputStreamReader
-
 
 class StorageSampleData(context: Context) {
     private val items: MutableList<SampleItem> = mutableListOf()

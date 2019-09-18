@@ -1,4 +1,4 @@
-package com.thinkup.easypagedlist
+package com.thinkup.sampleeasy
 
 data class SampleItem(
     val id: String,

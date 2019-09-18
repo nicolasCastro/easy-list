@@ -1,3 +1,3 @@
-package com.thinkup.easypagedlist
+package com.thinkup.sampleeasy
 
 data class SampleData(val data: List<SampleItem>)
