@@ -3,13 +3,17 @@
           package="com.thinkup.sampleeasy">
 
     <application
+            android:name=".SampleApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:name=".SampleApp"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".RendererListActivity">
+        </activity>
+        <activity android:name=".PagedListActivity">
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
