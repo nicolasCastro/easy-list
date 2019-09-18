@@ -24,5 +24,9 @@ class MainActivity : AppCompatActivity() {
         listSampleButton.setOnClickListener {
             startActivity(Intent(this, RendererListActivity::class.java))
         }
+
+        multilistSampleButton.setOnClickListener {
+            startActivity(Intent(this, MultiRendererListActivity::class.java))
+        }
     }
 }

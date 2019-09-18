@@ -12,6 +12,8 @@
             android:theme="@style/AppTheme">
         <activity android:name=".RendererListActivity">
         </activity>
+        <activity android:name=".MultiRendererListActivity">
+        </activity>
         <activity android:name=".PagedListActivity">
         </activity>
         <activity android:name=".MainActivity">

@@ -19,4 +19,10 @@
             app:layout_constraintTop_toBottomOf="@+id/pagedSampleButton"
             android:text="RENDERER LIST SAMPLE"/>
 
+    <Button android:id="@+id/multilistSampleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/listSampleButton"
+            android:text="MULTI RENDERERS LIST SAMPLE"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
