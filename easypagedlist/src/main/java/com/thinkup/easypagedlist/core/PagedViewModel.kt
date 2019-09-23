@@ -67,7 +67,10 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
 
     fun getItem(position: Int) = adapter.get(position)
 
-    fun refresh() = factory.invalidate()
+    fun refresh() {
+        adapter.notifyItemRangeRemoved(0, factory.dataSourceLiveData.value?.items?.size ?: 0)
+        factory.invalidate()
+    }
 
     override fun onError() {
         retry()

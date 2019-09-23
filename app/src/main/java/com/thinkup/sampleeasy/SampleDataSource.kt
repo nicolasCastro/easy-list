@@ -4,6 +4,7 @@ import android.content.Context
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easypagedlist.core.PagedViewModel
 import com.thinkup.easypagedlist.core.RendererDataSource
+import kotlinx.coroutines.delay
 
 class SampleDataSource(
     private val context: Context,
@@ -19,11 +20,19 @@ class SampleDataSource(
         actualOffset++
     }
 
-    override suspend fun getInitial(): List<*> = storageSampleData.get(pageSize)
+    override suspend fun getInitial(): List<*> {
+        return storageSampleData.get(pageSize)
+    }
 
-    override suspend fun getAfter(): List<*> = storageSampleData.get(pageSize, actualOffset * pageSize)
+    override suspend fun getAfter(): List<*> {
+        delay(2000)
+        return storageSampleData.get(pageSize, actualOffset * pageSize)
+    }
 
-    override suspend fun getBefore(): List<*> = storageSampleData.get(pageSize, actualOffset * pageSize)
+    override suspend fun getBefore(): List<*> {
+        delay(2000)
+        return storageSampleData.get(pageSize, actualOffset * pageSize)
+    }
 
     override fun create(inputSource: MutableList<RendererItem<*>>, firstInstance: Boolean): SampleDataSource =
         SampleDataSource(context, pageSize, inputSource, firstInstance)
