@@ -19,6 +19,8 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun getItems() = unwrap()
+
     fun removeItem(index: Int) {
         items.removeAt(index)
         notifyItemRemoved(index)
@@ -49,6 +51,8 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun wrapItems(items: List<Any>): List<RendererItem<Any>> = items.map { wrapItem(it) }
 
     private fun <T> wrapItem(item: T): RendererItem<T> = RendererItem(item)
+
+    private fun unwrap(): List<Any> = items.map { any -> any.viewModel.let { it } ?: run { /*next*/ } }
 
     private fun getRenderer(position: Int): ViewRenderer<Any, View> {
         val kclassType = getKClassType(position)
