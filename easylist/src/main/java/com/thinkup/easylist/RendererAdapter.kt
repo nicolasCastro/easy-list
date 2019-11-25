@@ -19,7 +19,18 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun setItemsWithoutNotify(items: List<Any>) {
+        this.items.clear()
+        this.items.addAll(wrapItems(items))
+    }
+
     fun getItems() = unwrap()
+
+    fun addItem(item: Any, position: Int = -1) {
+        val addPosition = if (position == -1) items.size else position
+        items.add(position, wrapItem(item))
+        notifyItemInserted(position)
+    }
 
     fun removeItem(index: Int) {
         items.removeAt(index)
@@ -52,7 +63,8 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private fun <T> wrapItem(item: T): RendererItem<T> = RendererItem(item)
 
-    private fun unwrap(): List<Any> = items.map { any -> any.viewModel.let { it } ?: run { /*next*/ } }
+    private fun unwrap(): List<Any> =
+        items.map { any -> any.viewModel.let { it } ?: run { /*next*/ } }
 
     private fun getRenderer(position: Int): ViewRenderer<Any, View> {
         val kclassType = getKClassType(position)
@@ -62,7 +74,11 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ?: throw RuntimeException("No ViewRenderer registered for item type: $kclassType/$stringType")
     }
 
-    private fun getTypeIndex(position: Int = -1, kclassType: String? = null, stringType: String? = null): Int {
+    private fun getTypeIndex(
+        position: Int = -1,
+        kclassType: String? = null,
+        stringType: String? = null
+    ): Int {
         val kclass = kclassType ?: getKClassType(position)
         val string = stringType ?: getStringType(position)
         return when {
