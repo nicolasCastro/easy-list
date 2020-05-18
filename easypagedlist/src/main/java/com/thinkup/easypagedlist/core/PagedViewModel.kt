@@ -3,20 +3,20 @@ package com.thinkup.easypagedlist.core
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.*
+
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
-import com.thinkup.easypagedlist.R
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easycore.ViewRenderer
+import com.thinkup.easypagedlist.R
 
 class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = DEFAULT_PAGE_SIZE) :
     ViewModel(), RendererPagedAdapter.RetryCallback {
 
     private val liveItemsSource: LiveData<PagedList<RendererItem<*>>>
     private val factory: RendererDataSourceFactory<T> = RendererDataSourceFactory(dataSource)
-    private val adapter: RendererPagedAdapter =
-        RendererPagedAdapter(this)
+    private val adapter: RendererPagedAdapter = RendererPagedAdapter(this)
 
     init {
         val config = PagedList.Config.Builder()
@@ -56,8 +56,11 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
         recyclerView.adapter = adapter
     }
 
-    private fun getState(): LiveData<RendererDataSource.State> = Transformations.switchMap<T,
-            RendererDataSource.State>(factory.dataSourceLiveData, RendererDataSource<T>::state)
+    private fun getState(): LiveData<RendererDataSource.State> =
+        Transformations.switchMap<T, RendererDataSource.State>(
+            factory.dataSourceLiveData,
+            RendererDataSource<T>::state
+        )
 
     private fun listIsEmpty() = liveItemsSource.value?.isEmpty() ?: true
 
@@ -67,9 +70,15 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
 
     fun getItem(position: Int) = adapter.get(position)
 
+    fun getItemType(position: Int) = adapter.getItemViewType(position)
+
     fun refresh() {
         adapter.notifyItemRangeRemoved(0, factory.dataSourceLiveData.value?.items?.size ?: 0)
         factory.invalidate()
+    }
+
+    fun <R> updateFilter(filterManager: FilterManager<R>) {
+        factory.updateFilter(filterManager)
     }
 
     override fun onError() {

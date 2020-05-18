@@ -20,11 +20,16 @@ abstract class RendererDataSource<T>(
     private var retryBlock: (() -> Unit)? = null
     protected var previousKey: Any? = null
     protected var nextKey: Any? = null
+    protected var filterManager: FilterManager<*>? = null
 
     private fun inputSource(): List<*> {
         val unwrapped = items.map { it.viewModel }
         items.clear()
         return unwrapped
+    }
+
+    fun <R> updateFilter(filterManager: FilterManager<R>?) {
+        this.filterManager = filterManager
     }
 
     override suspend fun getReinitial(): List<*> = getInitial()

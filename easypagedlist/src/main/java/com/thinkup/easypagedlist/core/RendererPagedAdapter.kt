@@ -125,7 +125,7 @@ class RendererPagedAdapter(
     }
 
     companion object {
-        private const val FOOTER_VIEW_TYPE = -1
+        const val FOOTER_VIEW_TYPE = -1
         private val adapterCallback = object : DiffUtil.ItemCallback<RendererItem<*>>() {
 
             override fun areItemsTheSame(oldTrip: RendererItem<*>, newTrip: RendererItem<*>): Boolean {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.thinkup.easypagedlist.core.FilterManager
 import com.thinkup.easypagedlist.core.PagedViewModel
 import com.thinkup.easypagedlist.core.RendererDataSource
 import kotlinx.android.synthetic.main.activity_paged_list.*
@@ -12,6 +13,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class PagedListActivity : AppCompatActivity() {
 
     private val paged: PagedViewModel<SampleDataSource> by viewModel()
+    private val filterManager = Filters()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +55,24 @@ class PagedListActivity : AppCompatActivity() {
         sampleRefresh.isRefreshing = false
         sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
         sampleRefresh.setOnRefreshListener {
-            paged.refresh()
+            paged.updateFilter(filterManager)
+            //paged.refresh()
         }
+    }
+
+    class Filters: FilterManager<String> {
+        private var text = ""
+        override fun clear() {
+            text = ""
+        }
+
+        override fun getFilter(): String {
+            return text
+        }
+
+        override fun setFilter(new: String) {
+            text = new
+        }
+
     }
 }
