@@ -32,7 +32,7 @@ abstract class ViewRenderer<M : Any, VT : View> : Unbindable<VT, M> {
 
     abstract fun bind(view: VT, model: M, position: Int)
 
-    override fun unbind(view: VT, model: M) {}
+    override fun unbind(view: VT, model: M, position: Int) {}
 
     open fun animateIn(view: VT, startDelay: Long): Long? = null
 
