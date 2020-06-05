@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import kotlin.reflect.KClass
 
-abstract class ViewRenderer<M : Any, VT : View> {
+abstract class ViewRenderer<M : Any, VT : View> : Unbindable<VT, M> {
     private var type: String
 
     constructor(type: KClass<M>) {
@@ -31,6 +31,8 @@ abstract class ViewRenderer<M : Any, VT : View> {
     abstract fun create(parent: ViewGroup): VT
 
     abstract fun bind(view: VT, model: M, position: Int)
+
+    override fun unbind(view: VT, model: M) {}
 
     open fun animateIn(view: VT, startDelay: Long): Long? = null
 
