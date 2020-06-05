@@ -52,7 +52,7 @@ class RendererPagedAdapter(
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         val position = holder.adapterPosition
-        if (position != -1 && position < itemCount) {
+        if (position != -1 && position < itemCount && getItemViewType(position) != FOOTER_VIEW_TYPE) {
             val renderer = getRenderer(position)
             val item = getWrapItem(position)
             renderer.unbind(holder.itemView, item.viewModel!!, position)
