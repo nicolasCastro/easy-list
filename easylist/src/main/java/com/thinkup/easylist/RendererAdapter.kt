@@ -51,9 +51,11 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         val position = holder.adapterPosition
-        val renderer = getRenderer(position)
-        val item = getItem(position)
-        renderer.unbind(holder.itemView, item.viewModel, position)
+        if (position != -1 && position < itemCount) {
+            val renderer = getRenderer(position)
+            val item = getItem(position)
+            renderer.unbind(holder.itemView, item.viewModel, position)
+        }
     }
 
     override fun getItemViewType(position: Int) = getTypeIndex(position)
