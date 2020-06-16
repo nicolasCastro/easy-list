@@ -58,6 +58,10 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     override fun getItemViewType(position: Int) = getTypeIndex(position)
 
     fun addRenderer(renderer: ViewRenderer<out Any, out View>) {

@@ -59,6 +59,10 @@ class RendererPagedAdapter(
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return if (position < super.getItemCount()) getTypeIndex(position)
         else FOOTER_VIEW_TYPE
