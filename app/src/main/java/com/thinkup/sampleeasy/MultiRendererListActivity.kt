@@ -2,9 +2,11 @@ package com.thinkup.sampleeasy
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easylist.RendererAdapter
+import com.thinkup.easylist.removeItemAnimator
 import kotlinx.android.synthetic.main.activity_renderer_list.*
 
 class MultiRendererListActivity : AppCompatActivity() {
@@ -24,9 +26,17 @@ class MultiRendererListActivity : AppCompatActivity() {
     private fun prepareList() {
         sampleList.layoutManager = LinearLayoutManager(this)
         adapter.addRenderer(SampleRenderer())
-        adapter.addRenderer(ColoredRenderer())
+        adapter.addRenderer(ColoredRenderer(this::removeItem))
         adapter.addRenderer(StringRenderer())
         sampleList.adapter = adapter
+    }
+
+    private fun removeItem(item: Any) {
+        adapter.removeItemAnimator(
+            recyclerView = sampleList,
+            item = item,
+            animation = AnimationUtils.loadAnimation(baseContext, R.anim.fade_out_right)
+        )
     }
 
     private fun prepareRefresh() {
