@@ -12,11 +12,21 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items: MutableList<RendererItem<*>> = mutableListOf()
     private val types: LinkedHashSet<String> = linkedSetOf()
     private val renderers: ArrayList<ViewRenderer<Any, View>> = arrayListOf()
+    private var emptyItem: RendererItem<Any>? = null
 
     fun setItems(items: List<Any>) {
         this.items.clear()
-        this.items.addAll(wrapItems(items))
+        if (items.isEmpty()) {
+            emptyItem?.let { this.items.add(it) }
+        } else {
+            this.items.addAll(wrapItems(items))
+        }
         notifyDataSetChanged()
+    }
+
+    fun <T : Any> setEmptyItem(item: T, renderer: ViewRenderer<T, out View>) {
+        emptyItem = wrapItem(item)
+        addRenderer(renderer)
     }
 
     fun setItemsWithoutNotify(items: List<Any>) {
