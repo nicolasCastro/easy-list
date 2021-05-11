@@ -29,6 +29,10 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         addRenderer(renderer)
     }
 
+    fun <T : Any> addEmptyRenderer(renderer: ViewRenderer<T, out View>) {
+        addRenderer(renderer)
+    }
+
     fun setItemsWithoutNotify(items: List<Any>) {
         this.items.clear()
         this.items.addAll(wrapItems(items))
