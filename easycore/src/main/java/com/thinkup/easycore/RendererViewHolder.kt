@@ -1,7 +1,6 @@
 package com.thinkup.easycore
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
+import androidx.viewbinding.ViewBinding
 
-class RendererViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer
+class RendererViewHolder(val binding: ViewBinding): RecyclerView.ViewHolder(binding.root)

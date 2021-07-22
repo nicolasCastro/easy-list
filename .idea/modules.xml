@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="easy-paged-list/app" />
-      <module fileurl="file://$PROJECT_DIR$/easy-paged-list.iml" filepath="$PROJECT_DIR$/easy-paged-list.iml" group="easy-paged-list" />
-      <module fileurl="file://$PROJECT_DIR$/easycore/easycore.iml" filepath="$PROJECT_DIR$/easycore/easycore.iml" group="easy-paged-list/easycore" />
-      <module fileurl="file://$PROJECT_DIR$/easylist/easylist.iml" filepath="$PROJECT_DIR$/easylist/easylist.iml" group="easy-paged-list/easylist" />
-      <module fileurl="file://$PROJECT_DIR$/easypagedlist/easypagedlist.iml" filepath="$PROJECT_DIR$/easypagedlist/easypagedlist.iml" group="easy-paged-list/easypagedlist" />
+      <module fileurl="file://$PROJECT_DIR$/easy-paged-list.iml" filepath="$PROJECT_DIR$/easy-paged-list.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/easy-paged-list.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/easy-paged-list.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/easycore/easy-paged-list.easycore.iml" filepath="$PROJECT_DIR$/.idea/modules/easycore/easy-paged-list.easycore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/easylist/easy-paged-list.easylist.iml" filepath="$PROJECT_DIR$/.idea/modules/easylist/easy-paged-list.easylist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/easypagedlist/easy-paged-list.easypagedlist.iml" filepath="$PROJECT_DIR$/.idea/modules/easypagedlist/easy-paged-list.easypagedlist.iml" />
     </modules>
   </component>
 </project>

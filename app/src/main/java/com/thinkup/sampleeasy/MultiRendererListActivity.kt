@@ -7,53 +7,57 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easylist.RendererAdapter
 import com.thinkup.easylist.removeItemAnimator
-import kotlinx.android.synthetic.main.activity_renderer_list.*
+import com.thinkup.sampleeasy.databinding.ActivityRendererListBinding
 
 class MultiRendererListActivity : AppCompatActivity() {
 
-    val adapter = RendererAdapter()
-    private val storageSampleData: StorageSampleData by lazy { StorageSampleData(this) }
+    private var binding: ActivityRendererListBinding? = null
+    private val adapter = RendererAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_renderer_list)
-
+        binding = ActivityRendererListBinding.inflate(layoutInflater)
+        setContentView(requireNotNull(binding).root)
         prepareList()
         prepareRefresh()
         loadItems()
     }
 
     private fun prepareList() {
-        sampleList.layoutManager = LinearLayoutManager(this)
+        binding?.sampleList?.layoutManager = LinearLayoutManager(this)
         adapter.addRenderer(SampleRenderer())
         adapter.addRenderer(ColoredRenderer(this::removeItem))
         adapter.addRenderer(StringRenderer())
-        sampleList.adapter = adapter
+        binding?.sampleList?.adapter = adapter
     }
 
     private fun removeItem(item: Any) {
         adapter.removeItemAnimator(
-            recyclerView = sampleList,
+            recyclerView = requireNotNull(binding).sampleList,
             item = item,
             animation = AnimationUtils.loadAnimation(baseContext, R.anim.fade_out_right)
         )
     }
 
     private fun prepareRefresh() {
-        sampleRefresh.isRefreshing = false
-        sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
-        sampleRefresh.setOnRefreshListener {
-            sampleRefresh.isRefreshing = true
-            loadItems()
+        with(binding) {
+            this?.let {
+                it.sampleRefresh.isRefreshing = false
+                it.sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
+                it.sampleRefresh.setOnRefreshListener {
+                    it.sampleRefresh.isRefreshing = true
+                    loadItems()
+                }
+            }
         }
     }
 
     private fun loadItems() {
         adapter.setItems(getInitial())
-        sampleRefresh.isRefreshing = false
+        binding?.sampleRefresh?.isRefreshing = false
     }
 
-    fun getInitial(): List<Any> {
+    private fun getInitial(): List<Any> {
         return mutableListOf<Any>().apply {
 
             add(SampleItem("1", "Name1", "Male", "Company1"))

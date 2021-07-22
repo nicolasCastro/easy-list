@@ -1,12 +1,11 @@
 package com.thinkup.easycore
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
+import androidx.viewbinding.ViewBinding
 import kotlin.reflect.KClass
 
-abstract class ViewRenderer<M : Any, VT : View> : Unbindable<VT, M> {
+abstract class ViewRenderer<M : Any, VB : ViewBinding> : Unbindable<VB, M> {
     private var type: String
 
     constructor(type: KClass<M>) {
@@ -28,15 +27,11 @@ abstract class ViewRenderer<M : Any, VT : View> : Unbindable<VT, M> {
 
     fun getType(): String = type
 
-    abstract fun create(parent: ViewGroup): VT
+    abstract val create: (layoutIflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean) -> VB
 
-    abstract fun bind(view: VT, model: M, position: Int)
+    abstract fun bind(binding: VB, model: M, position: Int)
 
-    override fun unbind(view: VT, model: M, position: Int) {}
+    override fun unbind(binding: VB, model: M, position: Int) {}
 
-    open fun animateIn(view: VT, startDelay: Long): Long? = null
-
-    protected fun inflate(@LayoutRes layout: Int, parent: ViewGroup, attachToRoot: Boolean = false): View {
-        return LayoutInflater.from(parent.context).inflate(layout, parent, attachToRoot)
-    }
+    open fun animateIn(binding: VB, startDelay: Long): Long? = null
 }

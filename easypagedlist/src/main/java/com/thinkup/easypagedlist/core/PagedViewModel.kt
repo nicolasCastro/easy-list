@@ -1,15 +1,12 @@
 package com.thinkup.easypagedlist.core
 
-import android.view.View
-import androidx.annotation.LayoutRes
 import androidx.lifecycle.*
-
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easycore.ViewRenderer
-import com.thinkup.easypagedlist.R
 
 class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = DEFAULT_PAGE_SIZE) :
     ViewModel(), RendererPagedAdapter.RetryCallback {
@@ -43,14 +40,14 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
         })
     }
 
-    fun addRenderers(vararg renderers: ViewRenderer<out Any, out View>) {
+    fun addRenderers(vararg renderers: ViewRenderer<out Any, out ViewBinding>) {
         renderers.forEach {
             adapter.addRenderer(it)
         }
     }
 
-    fun setFooterLayout(@LayoutRes loading: Int = R.layout.footer_loading, @LayoutRes error: Int = R.layout.footer_error) =
-        adapter.setFooterLayout(loading, error)
+    fun setFooterBinding(footerViewBinding: ViewBinding? = null, errorViewBinding: ViewBinding? = null) =
+        adapter.setFooterBinding(footerViewBinding, errorViewBinding)
 
     fun attachToRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = adapter
@@ -62,7 +59,7 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
             RendererDataSource<T>::state
         )
 
-    private fun listIsEmpty() = liveItemsSource.value?.isEmpty() ?: true
+    private fun listIsEmpty() = liveItemsSource.value?.isEmpty() ?: false
 
     private fun retry() = factory.dataSourceLiveData.value?.retry()
 

@@ -2,31 +2,31 @@ package com.thinkup.sampleeasy
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.thinkup.easypagedlist.core.PagedViewModel
-import com.thinkup.easypagedlist.core.RendererDataSource
-
-import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.thinkup.sampleeasy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private var binding: ActivityMainBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(requireNotNull(binding).root)
+        with(binding) {
+            this?.let {
+                it.pagedSampleButton.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, PagedListActivity::class.java))
+                }
 
-        pagedSampleButton.setOnClickListener {
-            startActivity(Intent(this, PagedListActivity::class.java))
-        }
+                it.listSampleButton.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, RendererListActivity::class.java))
+                }
 
-        listSampleButton.setOnClickListener {
-            startActivity(Intent(this, RendererListActivity::class.java))
-        }
-
-        multilistSampleButton.setOnClickListener {
-            startActivity(Intent(this, MultiRendererListActivity::class.java))
+                it.multilistSampleButton.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, MultiRendererListActivity::class.java))
+                }
+            }
         }
     }
 }

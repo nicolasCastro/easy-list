@@ -1,18 +1,24 @@
 package com.thinkup.sampleeasy
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.thinkup.easycore.ViewRenderer
-import kotlinx.android.synthetic.main.item_sample.view.*
+import com.thinkup.sampleeasy.databinding.ItemSampleBinding
 
-class ColoredRenderer(private val onRemoveClick: ((Any) -> Unit)?) : ViewRenderer<ColoredItem, View>(ColoredItem::class) {
-    override fun create(parent: ViewGroup): View = inflate(R.layout.item_sample, parent, false)
+class ColoredRenderer(
+    private val onRemoveClick: ((Any) -> Unit)?,
+) : ViewRenderer<ColoredItem, ItemSampleBinding>(ColoredItem::class) {
 
-    override fun bind(view: View, model: ColoredItem, position: Int) {
-        view.setBackgroundColor(model.color)
-        view.setOnClickListener {
-            onRemoveClick?.invoke(model)
+    override val create: (inflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean) -> ItemSampleBinding
+        get() = ItemSampleBinding::inflate
+
+    override fun bind(binding: ItemSampleBinding, model: ColoredItem, position: Int) {
+        with(binding.root) {
+            setBackgroundColor(model.color)
+            setOnClickListener {
+                onRemoveClick?.invoke(model)
+            }
         }
     }
+
 }
