@@ -6,10 +6,8 @@ import androidx.paging.PagedList
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easypagedlist.core.converters.DataSource
 import com.thinkup.easypagedlist.core.converters.ListProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import java.util.concurrent.Executors
 
 abstract class RendererDataSource<T>(
     val items: MutableList<RendererItem<*>> = mutableListOf(),
@@ -85,8 +83,8 @@ abstract class RendererDataSource<T>(
     private fun convert(items: List<RendererItem<*>>) =
         PagedList.Builder<Int, RendererItem<*>>(DataSource(ListProvider(items)), DataSource.default(items.size))
             .setInitialKey(0)
-            .setNotifyExecutor {}
-            .setFetchExecutor { }
+            .setNotifyExecutor(Executors.newSingleThreadExecutor())
+            .setFetchExecutor(Executors.newSingleThreadExecutor())
             .build()
 
     private fun setRetry(retry: () -> Unit) {
@@ -103,6 +101,7 @@ abstract class RendererDataSource<T>(
             withContext(Dispatchers.Main) {
                 try {
                     service()
+                    delay(100)
                     state.postValue(State.DONE)
                 } catch (ex: Exception) {
                     state.postValue(State.ERROR)

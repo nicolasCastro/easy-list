@@ -59,7 +59,7 @@ class PagedViewModel<T : RendererDataSource<T>>(dataSource: T, pageSize: Int = D
             RendererDataSource<T>::state
         )
 
-    private fun listIsEmpty() = liveItemsSource.value?.isEmpty() ?: true
+    private fun listIsEmpty() = liveItemsSource.value?.isEmpty() ?: false
 
     private fun retry() = factory.dataSourceLiveData.value?.retry()
 
