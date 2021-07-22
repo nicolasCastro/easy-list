@@ -1,23 +1,25 @@
 package com.thinkup.sampleeasy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easypagedlist.core.FilterManager
 import com.thinkup.easypagedlist.core.PagedViewModel
 import com.thinkup.easypagedlist.core.RendererDataSource
-import kotlinx.android.synthetic.main.activity_paged_list.*
+import com.thinkup.sampleeasy.databinding.ActivityPagedListBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PagedListActivity : AppCompatActivity() {
 
+    private var binding: ActivityPagedListBinding? = null
     private val paged: PagedViewModel<SampleDataSource> by viewModel()
     private val filterManager = Filters()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paged_list)
+        binding = ActivityPagedListBinding.inflate(layoutInflater)
+        setContentView(requireNotNull(binding).root)
 
         prepareRefresh()
         prepareList()
@@ -40,27 +42,27 @@ class PagedListActivity : AppCompatActivity() {
 
     private fun initList() {
         paged.initList(this) {
-            sampleRefresh.isRefreshing = false
+            requireNotNull(binding).sampleRefresh.isRefreshing = false
         }
     }
 
     private fun prepareList() {
-        sampleList.layoutManager = LinearLayoutManager(this)
+        requireNotNull(binding).sampleList.layoutManager = LinearLayoutManager(this)
         paged.addRenderers(SampleRenderer())
-        paged.setFooterLayout(R.layout.footer_loading, R.layout.footer_error)
-        paged.attachToRecyclerView(sampleList)
+//        paged.setFooterBinding(FooterLoadingBinding.inflate(layoutInflater), FooterErrorBinding.inflate(layoutInflater))
+        paged.attachToRecyclerView(requireNotNull(binding).sampleList)
     }
 
     private fun prepareRefresh() {
-        sampleRefresh.isRefreshing = false
-        sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
-        sampleRefresh.setOnRefreshListener {
+        requireNotNull(binding).sampleRefresh.isRefreshing = false
+        requireNotNull(binding).sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
+        requireNotNull(binding).sampleRefresh.setOnRefreshListener {
             paged.updateFilter(filterManager)
-            //paged.refresh()
+            paged.refresh()
         }
     }
 
-    class Filters: FilterManager<String> {
+    class Filters : FilterManager<String> {
         private var text = ""
         override fun clear() {
             text = ""

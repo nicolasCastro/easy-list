@@ -5,19 +5,21 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thinkup.easylist.RendererAdapter
-import kotlinx.android.synthetic.main.activity_renderer_list.*
+import com.thinkup.sampleeasy.databinding.ActivityRendererListBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RendererListActivity : AppCompatActivity() {
 
-    val adapter = RendererAdapter()
+    private var binding: ActivityRendererListBinding? = null
+    private val adapter = RendererAdapter()
     private val storageSampleData: StorageSampleData by lazy { StorageSampleData(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_renderer_list)
+        binding = ActivityRendererListBinding.inflate(layoutInflater)
+        setContentView(requireNotNull(binding).root)
 
         prepareList()
         prepareRefresh()
@@ -30,24 +32,24 @@ class RendererListActivity : AppCompatActivity() {
     }
 
     private fun prepareList() {
-        sampleList.layoutManager = LinearLayoutManager(this)
+        requireNotNull(binding).sampleList.layoutManager = LinearLayoutManager(this)
         adapter.addRenderer(SampleRenderer())
-        sampleList.adapter = adapter
+        requireNotNull(binding).sampleList.adapter = adapter
     }
 
     private fun prepareRefresh() {
-        sampleRefresh.isRefreshing = false
-        sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
-        sampleRefresh.setOnRefreshListener {
-            sampleRefresh.isRefreshing = true
+        requireNotNull(binding).sampleRefresh.isRefreshing = false
+        requireNotNull(binding).sampleRefresh.setColorSchemeResources(R.color.colorPrimary)
+        requireNotNull(binding).sampleRefresh.setOnRefreshListener {
+            requireNotNull(binding).sampleRefresh.isRefreshing = true
             loadItems()
         }
     }
 
     private fun loadItems() {
         adapter.setItems(getInitial())
-        sampleRefresh.isRefreshing = false
+        requireNotNull(binding).sampleRefresh.isRefreshing = false
     }
 
-    fun getInitial(): List<SampleItem> = storageSampleData.get(10)
+    private fun getInitial(): List<SampleItem> = storageSampleData.get(10)
 }

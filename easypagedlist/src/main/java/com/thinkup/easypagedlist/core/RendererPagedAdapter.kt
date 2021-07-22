@@ -1,41 +1,48 @@
 package com.thinkup.easypagedlist.core
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.thinkup.easypagedlist.R
+import androidx.viewbinding.ViewBinding
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easycore.RendererViewHolder
 import com.thinkup.easycore.RendererViewModel
 import com.thinkup.easycore.ViewRenderer
+import com.thinkup.easypagedlist.databinding.FooterErrorBinding
+import com.thinkup.easypagedlist.databinding.FooterLoadingBinding
 
 class RendererPagedAdapter(
     private val errorCallback: RetryCallback? = null,
-    @LayoutRes private var footerLoadingLayout: Int = R.layout.footer_loading,
-    @LayoutRes private var footerErrorLayout: Int = R.layout.footer_error
+    private var footerLoadingBinding: ViewBinding? = null,
+    private var footerErrorBinding: ViewBinding? = null
 ) : PagedListAdapter<RendererItem<*>, RecyclerView.ViewHolder>(adapterCallback) {
     private val types: LinkedHashSet<String> = linkedSetOf()
-    private val renderers: ArrayList<ViewRenderer<Any, View>> = arrayListOf()
+    private val renderers: ArrayList<ViewRenderer<Any, ViewBinding>> = arrayListOf()
     private var state = RendererDataSource.State.LOADING
 
-    private fun getFooterLayout(): Int =
-        if (state == RendererDataSource.State.ERROR) footerErrorLayout
-        else footerLoadingLayout
-
-    fun setFooterLayout(@LayoutRes loading: Int = R.layout.footer_loading, @LayoutRes error: Int = R.layout.footer_error) {
-        footerLoadingLayout = loading
-        footerErrorLayout = error
+    fun setFooterBinding(footerViewBinding: ViewBinding? = null, errorViewBinding: ViewBinding? = null) {
+        footerLoadingBinding = footerViewBinding
+        footerErrorBinding = errorViewBinding
     }
+
+    private fun getFooterBinding(): ViewBinding? =
+        if (state == RendererDataSource.State.ERROR) footerErrorBinding
+        else footerLoadingBinding
+
+    private fun getDefaultFooter(parent: ViewGroup): ViewBinding? =
+        if (state == RendererDataSource.State.ERROR)
+            FooterErrorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        else FooterLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == FOOTER_VIEW_TYPE) {
-            Footer(LayoutInflater.from(parent.context).inflate(getFooterLayout(), parent, false))
+            val footerBinding = if (getFooterBinding() == null) getDefaultFooter(parent)
+            else footerLoadingBinding
+            Footer(requireNotNull(footerBinding))
         } else {
-            RendererViewHolder(renderers[viewType].create(parent))
+            RendererViewHolder(renderers[viewType].create(LayoutInflater.from(parent.context), parent, false))
         }
     }
 
@@ -43,19 +50,21 @@ class RendererPagedAdapter(
         if (getItemViewType(position) == FOOTER_VIEW_TYPE) {
             (holder as Footer).bind(state, errorCallback)
         } else {
+            val bindingHolder = holder as RendererViewHolder
             val renderer = getRenderer(position)
             val item = getWrapItem(position)
-            renderer.bind(holder.itemView, item.viewModel!!, position)
+            renderer.bind(bindingHolder.binding, item.viewModel!!, position)
         }
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        val position = holder.adapterPosition
+        val position = holder.absoluteAdapterPosition
         if (position != -1 && position < itemCount && getItemViewType(position) != FOOTER_VIEW_TYPE) {
+            val bindingHolder = holder as RendererViewHolder
             val renderer = getRenderer(position)
             val item = getWrapItem(position)
-            renderer.unbind(holder.itemView, item.viewModel!!, position)
+            renderer.unbind(bindingHolder.binding, item.viewModel!!, position)
         }
     }
 
@@ -68,16 +77,16 @@ class RendererPagedAdapter(
         else FOOTER_VIEW_TYPE
     }
 
-    fun addRenderer(renderer: ViewRenderer<out Any, out View>) {
+    fun addRenderer(renderer: ViewRenderer<out Any, out ViewBinding>) {
         if (types.contains(renderer.getType())) {
             return //throw RuntimeException("A ViewRenderer for item type '${renderer.getType()}' has already been added.")
         } else {
             types.add(renderer.getType())
-            renderers.add(renderer as ViewRenderer<Any, View>)
+            renderers.add(renderer as ViewRenderer<Any, ViewBinding>)
         }
     }
 
-    private fun getRenderer(position: Int): ViewRenderer<Any, View> {
+    private fun getRenderer(position: Int): ViewRenderer<Any, ViewBinding> {
         val kclassType = getKClassType(position)
         val stringType = getStringType(position)
         val index = getTypeIndex(position, kclassType, stringType)
@@ -126,7 +135,7 @@ class RendererPagedAdapter(
         notifyItemChanged(super.getItemCount())
     }
 
-    class Footer(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class Footer(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(state: RendererDataSource.State, errorCallback: RetryCallback?) {
             itemView.setOnClickListener {
                 if (state == RendererDataSource.State.ERROR) errorCallback?.onError()
@@ -142,8 +151,8 @@ class RendererPagedAdapter(
         const val FOOTER_VIEW_TYPE = -1
         private val adapterCallback = object : DiffUtil.ItemCallback<RendererItem<*>>() {
 
-            override fun areItemsTheSame(oldTrip: RendererItem<*>, newTrip: RendererItem<*>): Boolean {
-                return oldTrip.viewModel.hashCode() == newTrip.viewModel.hashCode()
+            override fun areItemsTheSame(old: RendererItem<*>, new: RendererItem<*>): Boolean {
+                return old.viewModel?.hashCode() == new.viewModel?.hashCode()
             }
 
             override fun areContentsTheSame(oldTrip: RendererItem<*>, newTrip: RendererItem<*>): Boolean {

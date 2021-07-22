@@ -3,7 +3,8 @@ package com.thinkup.easypagedlist.core.converters
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 
-class DataSource<T>(private val provider: ListProvider<T>) : PageKeyedDataSource<Int, T>() {
+class DataSource<T: Any>(private val provider: ListProvider<T>) : PageKeyedDataSource<Int, T>() {
+
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, T>) {
         val list = provider.getList(0, params.requestedLoadSize)
         callback.onResult(list, 1, 2)

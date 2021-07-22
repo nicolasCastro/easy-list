@@ -1,5 +1,5 @@
 package com.thinkup.easycore
 
-interface Unbindable<VT, M> {
-    fun unbind(view: VT, model: M, position: Int)
+interface Unbindable<VB, M> {
+    fun unbind(binding: VB, model: M, position: Int)
 }

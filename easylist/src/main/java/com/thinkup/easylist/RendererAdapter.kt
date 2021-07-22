@@ -1,17 +1,18 @@
 package com.thinkup.easylist
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.thinkup.easycore.RendererItem
 import com.thinkup.easycore.RendererViewHolder
 import com.thinkup.easycore.RendererViewModel
 import com.thinkup.easycore.ViewRenderer
 
-class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RendererAdapter : RecyclerView.Adapter<RendererViewHolder>() {
     private val items: MutableList<RendererItem<*>> = mutableListOf()
     private val types: LinkedHashSet<String> = linkedSetOf()
-    private val renderers: ArrayList<ViewRenderer<Any, View>> = arrayListOf()
+    private val renderers: ArrayList<ViewRenderer<Any, ViewBinding>> = arrayListOf()
     private var emptyItem: RendererItem<Any>? = null
 
     fun setItems(items: List<Any>) {
@@ -24,12 +25,12 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun <T : Any> setEmptyItem(item: T, renderer: ViewRenderer<T, out View>) {
+    fun <T : Any> setEmptyItem(item: T, renderer: ViewRenderer<T, out ViewBinding>) {
         emptyItem = wrapItem(item)
         addRenderer(renderer)
     }
 
-    fun <T : Any> addEmptyRenderer(renderer: ViewRenderer<T, out View>) {
+    fun <T : Any> addEmptyRenderer(renderer: ViewRenderer<T, out ViewBinding>) {
         addRenderer(renderer)
     }
 
@@ -51,24 +52,24 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyItemRemoved(index)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        RendererViewHolder(renderers[viewType].create(parent))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RendererViewHolder =
+        RendererViewHolder(renderers[viewType].create(LayoutInflater.from(parent.context), parent, false))
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RendererViewHolder, position: Int) {
         val renderer = getRenderer(position)
         val item = getItem(position)
-        renderer.bind(holder.itemView, item.viewModel, position)
+        renderer.bind(holder.binding, item.viewModel, position)
     }
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+    override fun onViewRecycled(holder: RendererViewHolder) {
         super.onViewRecycled(holder)
         val position = holder.adapterPosition
         if (position != -1 && position < itemCount) {
             val renderer = getRenderer(position)
             val item = getItem(position)
-            renderer.unbind(holder.itemView, item.viewModel, position)
+            renderer.unbind(holder.binding, item.viewModel, position)
         }
     }
 
@@ -78,12 +79,12 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int) = getTypeIndex(position)
 
-    fun addRenderer(renderer: ViewRenderer<out Any, out View>) {
+    fun addRenderer(renderer: ViewRenderer<out Any, out ViewBinding>) {
         if (types.contains(renderer.getType())) {
             return //throw RuntimeException("A ViewRenderer for item type '${renderer.getType()}' has already been added.")
         } else {
             types.add(renderer.getType())
-            renderers.add(renderer as ViewRenderer<Any, View>)
+            renderers.add(renderer as ViewRenderer<Any, ViewBinding>)
         }
     }
 
@@ -94,7 +95,7 @@ class RendererAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun unwrap(): List<Any> =
         items.map { any -> any.viewModel.let { it } ?: run { /*next*/ } }
 
-    private fun getRenderer(position: Int): ViewRenderer<Any, View> {
+    private fun getRenderer(position: Int): ViewRenderer<Any, ViewBinding> {
         val kclassType = getKClassType(position)
         val stringType = getStringType(position)
         val index = getTypeIndex(position, kclassType, stringType)
